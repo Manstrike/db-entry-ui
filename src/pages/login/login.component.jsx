@@ -11,9 +11,12 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-import { Home } from '../home/home.component.jsx';
-
 export class LoginPage extends React.Component {
+    constructor(onClick) {
+        super();
+        this._onClick = onClick;
+    }
+
     _useStyles() {
         return makeStyles((theme) => ({
             paper: {
@@ -27,7 +30,7 @@ export class LoginPage extends React.Component {
               marginTop: theme.spacing(1),
             },
             submit: {
-              margin: theme.spacing(3, 0, 2),
+              marginBottom: theme.spacing(1),
             },
         }));
     }
@@ -64,17 +67,17 @@ export class LoginPage extends React.Component {
                             id="password"
                             autoComplete="current-password"
                         />
-                        <Link to="/main" component={Home}>
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
-                            >
-                                Sign In
-                            </Button>
-                        </Link>
+                        <Button
+                            type="button"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                            component={Link}
+                            to="/home"
+                        >
+                            Sign In
+                        </Button>
                     </form>
                 </div>
             </Container>
