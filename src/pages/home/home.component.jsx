@@ -1,54 +1,51 @@
 import React from 'react';
-import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Button from '@material-ui/core/Button';
-import './home.component.css';
 
-import {
-    Link
-  } from "react-router-dom";
+import './home.component.css';
+import { config } from '../../config';
+
+import { Menu } from './menu.component';
+import { SchoolList } from './school-list.component';
+
 
 export class Home extends React.Component{
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            entries: [],
+        }
+    }
+
+    componentDidMount() {
+        this._fetchSchools();
+    }
+
+    _fetchSchools() {
+        fetch(`${config.API}/school/all`)
+            .then(response => response.json())
+            .then(result => {
+                const entries = result.map((item, i) => {
+                    return {
+                        ...item,
+                        name: `${item.community}, ${item.city} - ${item.level}`,
+                    };
+                });
+                this.setState({
+                    entries: [...entries]
+                });
+            });
+    }
+
+
     render() {
+        const { history } = this.props;
+        const { entries } = this.state;
+
         return (
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
-                <div>
-                    <Button
-                        type="button"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className="navButton"
-                        component={Link}
-                        to='/school/create'
-                    >
-                        Create School
-                    </Button>
-                    <Button
-                        fullWidth
-                        type="button"
-                        variant="contained"
-                        color="primary"
-                        className="navButton"
-                        component={Link}
-                        to='/teacher/create'
-                    >
-                        Create Teacher
-                    </Button>
-                    <Button
-                        fullWidth
-                        type="button"
-                        variant="contained"
-                        color="primary"
-                        className="navButton"
-                        component={Link}
-                        to='/admin'
-                    >
-                        Admin Panel
-                    </Button>
-                </div>
-            </Container>
+            <div className="home-page">
+                <SchoolList entries={entries}/>
+                <Menu history={history}/>
+            </div>  
         );
     }
 }

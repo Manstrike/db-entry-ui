@@ -9,11 +9,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 export class UserTable extends React.Component {
-    constructor(props) {
-        super(props);
-        console.log({props});
-    }
-
     render() {
         return (
             <TableContainer component={Paper}>

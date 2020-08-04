@@ -4,47 +4,69 @@ import {
     Link
 } from "react-router-dom";
 
+import { config } from '../../config';
+
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 export class LoginPage extends React.Component {
-    constructor(onClick) {
-        super();
-        this._onClick = onClick;
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            login: '',
+            password: '',
+        }
+
+        this._onClick = props.onClick;
+
+        this._handleClick = this._handleClick.bind(this);
+        this._onLoginChanged = this._onLoginChanged.bind(this);
+        this._onPasswordChanged = this._onPasswordChanged.bind(this);
     }
 
-    _useStyles() {
-        return makeStyles((theme) => ({
-            paper: {
-              marginTop: theme.spacing(8),
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            },
-            form: {
-              width: '100%', // Fix IE 11 issue.
-              marginTop: theme.spacing(1),
-            },
-            submit: {
-              marginBottom: theme.spacing(1),
-            },
-        }));
+    _handleClick(event) {
+        event.preventDefault();
+
+        if (!this.state.login || !this.state.password) return;
+
+        const userCredentials = {
+            login: this.state.login,
+            password: this.state.password,
+        };
+
+        fetch(`${config.API}/user/${userCredentials.login}`)
+            .then(response => response.json())
+            .then(([ result ]) => {
+                //TODO Add button for logout, rework this mess
+                this._onClick(userCredentials, result);
+            });
+    }
+
+    _onLoginChanged(event) {
+        this.setState({
+            login: event.target.value
+        });
+    }
+
+    _onPasswordChanged(event) {
+        this.setState({
+            password: event.target.value
+        });
     }
 
     render() {
-        const classes = this._useStyles();
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
-                <div className={classes.paper}>
+                <div className='someClass'>
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <form className={classes.form} noValidate>
+                    <form className='somClass' noValidate>
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -55,6 +77,7 @@ export class LoginPage extends React.Component {
                             name="login"
                             autoComplete="login"
                             autoFocus
+                            onChange={this._onLoginChanged}
                         />
                         <TextField
                             variant="outlined"
@@ -66,15 +89,15 @@ export class LoginPage extends React.Component {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            onChange={this._onPasswordChanged}
                         />
                         <Button
                             type="button"
                             fullWidth
                             variant="contained"
                             color="primary"
-                            className={classes.submit}
-                            component={Link}
-                            to="/home"
+                            className='cssdds'
+                            onClick={this._handleClick}
                         >
                             Sign In
                         </Button>

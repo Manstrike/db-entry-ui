@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { config } from '../../config';
+
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -8,54 +10,74 @@ import Container from '@material-ui/core/Container';
 import { UserTable } from './user-table.component';
 
 export class AdminPanel extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
+        const currentUser = JSON.parse(localStorage.getItem('user'));
 
         this.state = {
             nameInput: '',
             passwordInput: '',
             users: [],
+            userAllowedAccess: currentUser.role === 'admin',
         };
 
         this.handleButtonClick = this._handleButtonClick.bind(this);
-        this.onNameChange = this.onNameChange.bind(this);
-        this.onPassChange = this.onPassChange.bind(this);
+        this.onNameChange = this._onNameChange.bind(this);
+        this.onPassChange = this._onPassChange.bind(this);
     }
 
-    _handleButtonClick(e) {
-        e.preventDefault();
+    _handleButtonClick(event) {
+        event.preventDefault();
 
         if (this.state.nameInput === '' || this.state.passwordInput === '') return;
 
         const userCopy = [...this.state.users];
-        userCopy.push({
+        const newUser = {
             name: this.state.nameInput,
             password: this.state.passwordInput,
-        });
+        }
 
-        this.setState({
-            ...this.state,
-            users: [...userCopy],
-            nameInput: '',
-            passwordInput: ''
+        fetch(`${config.API}/user/create`, {
+            method: 'POST',
+            body: JSON.stringify(newUser),
+            headers: {
+                'Content-type' : 'application/json'
+            }
+        })
+        .then(response => response)
+        .then(result => {
+            console.log({result})
+            if (result.status === 200) {
+                userCopy.push(newUser);
+
+                this.setState({
+                    ...this.state,
+                    users: [...userCopy],
+                    nameInput: '',
+                    passwordInput: ''
+                });
+            }
         });
-        //TODO Post request to API
-        console.log(this.state);
     }
 
-    onNameChange(event) {
+    _onNameChange(event) {
         this.setState({
             nameInput: event.target.value
         });
     }
 
-    onPassChange(event) {
+    _onPassChange(event) {
         this.setState({
             passwordInput: event.target.value
         });
     }
 
     render() {
+        const { userAllowedAccess } = this.state;
+
+        if (!userAllowedAccess) return null;
+
         return (
             <Container component='main' maxWidth="xs">
                 <CssBaseline />

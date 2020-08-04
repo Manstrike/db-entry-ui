@@ -1,4 +1,19 @@
-
 .navButton {
     margin: 1rem !important;
+}
+
+.home-page {
+    display: flex;
+    justify-content: space-around;
+    margin: 3rem;
+}
+
+.entry-list {
+    max-width: 1000px;
+    flex: 1;
+    border: 1px solid grey;
+}
+
+.MuiList-root.entry-item {
+    margin-left: 20px;
 }
