@@ -241,6 +241,18 @@ class Teacher extends React.Component {
                     >
                         Create Teacher
                     </Typography>
+                    <Typography 
+                        component='h1'
+                        variant='h6'
+                    >
+                        To save as Male: CTRL(CMD) + M
+                    </Typography>
+                    <Typography 
+                        component='h1'
+                        variant='h6'
+                    >
+                        To save as Female: CTRL(CMD) + ALT + F
+                    </Typography>
 
                     <TextField 
                         label='First Name'
