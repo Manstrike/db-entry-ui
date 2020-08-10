@@ -1,29 +1,32 @@
 import React from 'react';
+import queryString from 'query-string';
+
 import { config } from '../../config';
 
-import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { withRouter } from 'react-router-dom';
 
-import queryString from 'query-string';
-
-import TeacherList from './teacher-list.component';
+import { TeacherList } from './teacher-list.component';
 
 class Teacher extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
             firstName: '',
             secondName: '',
             email: '',
             gender: '',
-            school: '',
+            school: null,
             schoolBuilding: '',
             subject: '',
-            position: ''
+            position: '',
+            teacherList: [],
+            schoolId: null,
+            buildingId: null,
         };
 
         this.firstNameChanged = this._firstNameChanged.bind(this);
@@ -34,7 +37,16 @@ class Teacher extends React.Component {
     }
 
     _handleTeacherClick(teacher) {
-        console.log({teacher});
+        if (!teacher) return;
+
+        this.setState({
+            firstName: teacher.firstName,
+            secondName: teacher.secondName,
+            email: teacher.email,
+            gender: teacher.gender,
+            subject: teacher.subject,
+            position: teacher.position
+        });
     }
 
     componentWillMount() {
@@ -43,14 +55,22 @@ class Teacher extends React.Component {
 
     componentDidMount() {
         const { school, building } = queryString.parse(this.props.location.search);
+
         this.setState({
-            building
+            schoolId: school,
+            buildingId: building
         });
-        this._fetchSchoolInfo(school);
+
+        this._fetchSchoolInfo();
+        this._fetchSchoolTeachers();
     }
     
-    _fetchSchoolInfo(schoolId) {
-        fetch(`${config.API}/school/${schoolId}`)
+    _fetchSchoolInfo() {
+        const { school } = queryString.parse(this.props.location.search);
+
+        if (this.state.school) return;
+
+        fetch(`${config.API}/school/${school}`)
             .then(response => response.json())
             .then(([ result ]) => {
                 this.setState({
@@ -125,12 +145,45 @@ class Teacher extends React.Component {
         }
 
         const teacher = {
-            
-        }
+            firstName: this.state.firstName,
+            secondName: this.state.secondName,
+            gender: this.state.gender,
+            position: this.state.position,
+            subject: this.state.subject,
+            email: this.state.email,
+            school: this.state.schoolId,
+            building: this.state.buildingId
+        };
+
+        fetch(`${config.API}/teacher/create`, {
+            method: 'POST',
+            body: JSON.stringify(teacher),
+            headers: {
+                'Content-type' : 'application/json'
+            }
+        }).then(response => {
+            if (response.status !== 200) {
+                console.warn('Something wend wrong');
+                return;
+            }
+
+            this.setState({
+                firstName: '',
+                secondName: '',
+                email: '',
+                gender: '',
+                school: '',
+                schoolBuilding: '',
+                subject: '',
+                position: ''
+            });
+
+            this._fetchSchoolTeachers();
+        });
     }
 
     _handleKeyDown(event) {
-        if (event.ctrlKey && event.altKey && event.key === 'm') {
+        if (event.ctrlKey &&  event.key === 'm') {
             this.setState({
                 gender: 'M'
             });
@@ -146,10 +199,36 @@ class Teacher extends React.Component {
         }
     }
 
+    _fetchSchoolTeachers() {
+        const { school, building } = queryString.parse(this.props.location.search);
+        
+        const route = building 
+            ? `${config.API}/teacher/building/${school}/${building}`
+            : `${config.API}/teacher/school/${school}`;
+        
+        fetch(route)
+            .then(response => response.json())
+            .then(result => {
+                this.setState({
+                    teacherList: result
+                });
+            });
+    }
+
+    _fetchSubjects() {
+        //TODO
+    }
+
+    _fetchFunctions() {
+        //TODO
+    }
+
     render() {
+        const { teacherList, school } = this.state;
+
         return (
             <div className='home-page'>
-                <TeacherList onClick={this._handleTeacherClick.bind(this)} school={this.state.school}/>
+                <TeacherList onClick={this._handleTeacherClick.bind(this)} entries={teacherList} school={school}/>
                 <Container component='main' maxWidth='xs'>
                     <CssBaseline />
                     <Typography 
@@ -197,15 +276,6 @@ class Teacher extends React.Component {
                         margin='normal'
                     >
                     </TextField>
-                    <Button 
-                        type='button'
-                        color='primary'
-                        variant='contained'
-                        margin='normal'
-                        onClick={this.handleTeacherAdding}
-                    >
-                        Save
-                    </Button>
                 </Container>
             </div>
 

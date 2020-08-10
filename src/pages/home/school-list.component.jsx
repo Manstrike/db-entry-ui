@@ -23,7 +23,7 @@ export class SchoolList extends React.Component {
     render() {
         const entries = this.props.entries;
         return (
-            <div className='entry-list'>
+            <div className='entry-list-wrapper'>
                 <List>
                     {entries.map((item) => {
                         return (
