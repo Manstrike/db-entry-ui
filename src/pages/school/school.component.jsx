@@ -33,23 +33,13 @@ export class School extends React.Component {
     }
 
     _fetchCommunities() {
-        const savedCommunities = localStorage.getItem('communities');
-
-        if (savedCommunities) {
-            this.setState({
-                communitiesList: JSON.parse(savedCommunities)
-            });
-        } else {
-            fetch(`${config.API}/school/communities`)
-                .then(response => response.json())
-                .then(result => {
-                    this.setState({
-                        communitiesList: [...result]
-                    });
-
-                    localStorage.setItem('communities', JSON.stringify(result));
+        fetch(`${config.API}/school/communities`)
+            .then(response => response.json())
+            .then(result => {
+                this.setState({
+                    communitiesList: [...result]
                 });
-        }
+            });
     }
 
     _onChange(role, event) {
@@ -80,7 +70,7 @@ export class School extends React.Component {
             city: this.state.city,
             email: this.state.email,
             website: this.state.website,
-            schoolBuildings: this.state.schoolBuildings
+            schoolBuildings: this.state.schoolBuildings.split(',')
         }
 
         fetch(`${config.API}/school/create`, {
@@ -136,8 +126,8 @@ export class School extends React.Component {
                     onChange={this._onChange.bind(this, 'community')}
                 >
                     {communitiesList.map((option, index) => (
-                        <MenuItem key={index} value={option}>
-                            {option}
+                        <MenuItem key={index} value={option.id}>
+                            {option.name}
                         </MenuItem>
                     ))}
                 </TextField>

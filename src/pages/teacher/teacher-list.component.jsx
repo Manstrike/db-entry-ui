@@ -31,7 +31,7 @@ export class TeacherList extends React.Component {
                                         onClick={this._handleTeacherClick.bind(this, item)}
                                         key={item.id}
                                     >
-                                        <ListItemText primary={`${item.firstName} ${item.secondName}`}/>
+                                        <ListItemText primary={`[${item.gender}] ${item.firstName} ${item.secondName}`}/>
                                     </ListItem>
                                 </div>
                             );

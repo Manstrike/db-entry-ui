@@ -16,6 +16,7 @@ class Teacher extends React.Component {
         super(props);
 
         this.state = {
+            id: null,
             firstName: '',
             secondName: '',
             email: '',
@@ -40,6 +41,7 @@ class Teacher extends React.Component {
         if (!teacher) return;
 
         this.setState({
+            id: teacher.id,
             firstName: teacher.firstName,
             secondName: teacher.secondName,
             email: teacher.email,
@@ -72,7 +74,7 @@ class Teacher extends React.Component {
 
         fetch(`${config.API}/school/${school}`)
             .then(response => response.json())
-            .then(([ result ]) => {
+            .then((result ) => {
                 this.setState({
                     school: result
                 });
@@ -145,6 +147,7 @@ class Teacher extends React.Component {
         }
 
         const teacher = {
+            id: this.state.id,
             firstName: this.state.firstName,
             secondName: this.state.secondName,
             gender: this.state.gender,
@@ -168,6 +171,7 @@ class Teacher extends React.Component {
             }
 
             this.setState({
+                id: null,
                 firstName: '',
                 secondName: '',
                 email: '',

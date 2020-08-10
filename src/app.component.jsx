@@ -22,20 +22,12 @@ export class App extends React.Component{
     }
 
     _handleSignInButtonClicked(userCredentials, fetchedUser) {
-        const password = userCredentials.password;
+        const {login, password} = userCredentials;
         
-        let user = fetchedUser;
-
-        const savedUser = localStorage.getItem('user');
-
-        if (savedUser) {
-            user = JSON.parse(savedUser);
-        } else {
-            localStorage.setItem('user', JSON.stringify(fetchedUser));
-        }
+        localStorage.setItem('user', JSON.stringify(fetchedUser));
 
         this.setState({
-            redirect: password === user.password,
+            redirect: password === fetchedUser.password && login === fetchedUser.name,
         });
     }
 

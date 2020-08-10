@@ -21,17 +21,26 @@ export class Home extends React.Component{
     }
 
     _fetchSchools() {
+        let schools;
+
         fetch(`${config.API}/school/all`)
             .then(response => response.json())
             .then(result => {
-                const entries = result.map((item, i) => {
+                schools = result;
+                return fetch(`${config.API}/school/communities`)
+            })
+            .then(response => response.json())
+            .then(communities => {
+                schools = schools.map((item, i) => {
+                    const community = communities.find(comm => comm.id === item.community);
                     return {
                         ...item,
-                        name: `${item.community}, ${item.city} - ${item.level}`,
+                        name: `${community.name}, ${item.city} - ${item.level}`,
                     };
                 });
+
                 this.setState({
-                    entries: [...entries]
+                    entries: [...schools]
                 });
             });
     }

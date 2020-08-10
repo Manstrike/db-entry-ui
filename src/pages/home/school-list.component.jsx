@@ -22,6 +22,7 @@ export class SchoolList extends React.Component {
 
     render() {
         const entries = this.props.entries;
+        console.log({entries});
         return (
             <div className='entry-list-wrapper'>
                 <List>
@@ -63,7 +64,7 @@ export class SchoolList extends React.Component {
                                                             >
                                                                 <ListItemText 
                                                                     key={subitem.id} 
-                                                                    primary={subitem.name} 
+                                                                    primary={subitem.building_name} 
                                                                 />
                                                             </ListItem>
                                                         )

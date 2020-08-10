@@ -38,10 +38,20 @@ export class LoginPage extends React.Component {
             password: this.state.password,
         };
 
-        fetch(`${config.API}/user/${userCredentials.login}`)
+        fetch(`${config.API}/user/login`, {
+            method: 'POST',
+            body: JSON.stringify({
+                name: userCredentials.login
+            }),
+            headers: {
+                'Content-type' : 'application/json'
+            }
+        })
             .then(response => response.json())
-            .then(([ result ]) => {
+            .then((result) => {
                 //TODO Add button for logout, rework this mess
+                console.log({result})
+                if (!result) return;
                 this._onClick(userCredentials, result);
             });
     }

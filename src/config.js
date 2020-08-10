@@ -1,3 +1,3 @@
 export const config = {
-    API: 'http://localhost:5000'
+    API: 'http://https://db-entry.herokuapp.com'
 }
