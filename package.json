@@ -1,7 +1,7 @@
 {
   "name": "db-entry-frontend",
   "version": "0.1.0",
-  "homepage": "http://https://manstrike.github.io/db-entry-frontend",
+  "homepage": "http://manstrike.github.io/db-entry-frontend",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.0",
