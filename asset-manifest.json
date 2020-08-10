@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/db-entry-ui/static/css/main.dbf0a429.chunk.css",
-    "main.js": "/db-entry-ui/static/js/main.52427558.chunk.js",
-    "main.js.map": "/db-entry-ui/static/js/main.52427558.chunk.js.map",
+    "main.js": "/db-entry-ui/static/js/main.6703e542.chunk.js",
+    "main.js.map": "/db-entry-ui/static/js/main.6703e542.chunk.js.map",
     "runtime-main.js": "/db-entry-ui/static/js/runtime-main.cdfb46b2.js",
     "runtime-main.js.map": "/db-entry-ui/static/js/runtime-main.cdfb46b2.js.map",
     "static/js/2.49c88bdb.chunk.js": "/db-entry-ui/static/js/2.49c88bdb.chunk.js",
     "static/js/2.49c88bdb.chunk.js.map": "/db-entry-ui/static/js/2.49c88bdb.chunk.js.map",
     "index.html": "/db-entry-ui/index.html",
-    "precache-manifest.4f263e1868e637a27c87c82b13e2cea6.js": "/db-entry-ui/precache-manifest.4f263e1868e637a27c87c82b13e2cea6.js",
+    "precache-manifest.078c9eb1168a97e917b510d301ef6664.js": "/db-entry-ui/precache-manifest.078c9eb1168a97e917b510d301ef6664.js",
     "service-worker.js": "/db-entry-ui/service-worker.js",
     "static/css/main.dbf0a429.chunk.css.map": "/db-entry-ui/static/css/main.dbf0a429.chunk.css.map",
     "static/js/2.49c88bdb.chunk.js.LICENSE.txt": "/db-entry-ui/static/js/2.49c88bdb.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.cdfb46b2.js",
     "static/js/2.49c88bdb.chunk.js",
     "static/css/main.dbf0a429.chunk.css",
-    "static/js/main.52427558.chunk.js"
+    "static/js/main.6703e542.chunk.js"
   ]
 }
