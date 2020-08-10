@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/db-entry-frontend/static/css/main.dbf0a429.chunk.css",
+    "main.js": "/db-entry-frontend/static/js/main.52427558.chunk.js",
+    "main.js.map": "/db-entry-frontend/static/js/main.52427558.chunk.js.map",
+    "runtime-main.js": "/db-entry-frontend/static/js/runtime-main.d0283fca.js",
+    "runtime-main.js.map": "/db-entry-frontend/static/js/runtime-main.d0283fca.js.map",
+    "static/js/2.49c88bdb.chunk.js": "/db-entry-frontend/static/js/2.49c88bdb.chunk.js",
+    "static/js/2.49c88bdb.chunk.js.map": "/db-entry-frontend/static/js/2.49c88bdb.chunk.js.map",
+    "index.html": "/db-entry-frontend/index.html",
+    "precache-manifest.754e907ec605f227073a3cf713be0a0a.js": "/db-entry-frontend/precache-manifest.754e907ec605f227073a3cf713be0a0a.js",
+    "service-worker.js": "/db-entry-frontend/service-worker.js",
+    "static/css/main.dbf0a429.chunk.css.map": "/db-entry-frontend/static/css/main.dbf0a429.chunk.css.map",
+    "static/js/2.49c88bdb.chunk.js.LICENSE.txt": "/db-entry-frontend/static/js/2.49c88bdb.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d0283fca.js",
+    "static/js/2.49c88bdb.chunk.js",
+    "static/css/main.dbf0a429.chunk.css",
+    "static/js/main.52427558.chunk.js"
+  ]
+}
