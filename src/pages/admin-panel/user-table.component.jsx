@@ -16,14 +16,18 @@ export class UserTable extends React.Component {
                 <TableHead>
                   <TableRow>
                     <TableCell>Username</TableCell>
-                    <TableCell align="right">Password</TableCell>
+                    <TableCell >Password</TableCell>
+                    <TableCell align="right">Total worked (hours)</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {this.props.users.map((user, index) => (
                     <TableRow key={index}>
                       <TableCell component="th" scope="row">{user.name}</TableCell>
-                      <TableCell align="right">{user.password}</TableCell>
+                      <TableCell>{user.password}</TableCell>
+                      <TableCell align="right">{
+                      user.worked_total ? user.worked_total.toFixed(2) : 0
+                      }</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

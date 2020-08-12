@@ -12,6 +12,7 @@ export class Home extends React.Component{
         super(props);
 
         this.state = {
+            user: props.user,
             entries: [],
         }
     }
@@ -45,6 +46,39 @@ export class Home extends React.Component{
             });
     }
 
+    onClickFinish() {
+        const savedUser = JSON.parse(localStorage.getItem('user'));
+        fetch(`${config.API}/user/time/finish`, {
+            method: 'POST',
+            body: JSON.stringify({
+                userId: savedUser.id || this.state.user.id,
+                finishTime: new Date(),
+            }),
+            headers: {
+                'Content-type': 'application/json'
+            }
+        })
+            .then((res) => res.json())
+            .then(response => console.log(response));
+    }
+
+    onClickStart() {
+        const savedUser = JSON.parse(localStorage.getItem('user'));
+        const data = {
+            userId: savedUser.id || this.state.user.id,
+            startTime: new Date(),
+        };
+
+        fetch(`${config.API}/user/time/start`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-type' : 'application/json'
+            }
+        })
+            .then((res) => res.json())
+            .then(response => console.log(response));
+    }
 
     render() {
         const { history } = this.props;
@@ -53,7 +87,11 @@ export class Home extends React.Component{
         return (
             <div className="home-page">
                 <SchoolList entries={entries}/>
-                <Menu history={history}/>
+                <Menu 
+                    history={history} 
+                    onClickStart={this.onClickStart} 
+                    onClickFinish={this.onClickFinish}
+                />
             </div>  
         );
     }

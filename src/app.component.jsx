@@ -25,9 +25,9 @@ export class App extends React.Component{
         const {login, password} = userCredentials;
         
         localStorage.setItem('user', JSON.stringify(fetchedUser));
-
         this.setState({
             redirect: password === fetchedUser.password && login === fetchedUser.name,
+            user: fetchedUser
         });
     }
 
@@ -44,7 +44,7 @@ export class App extends React.Component{
                         <LoginPage history={history} location={this.props.location} onClick={this._handleSignInButtonClicked}/>
                     </Route>
                     <Route exact path='/home'>
-                        <Home history={history} />
+                        <Home history={history} user={this.state.fetchedUser}/>
                     </Route>
                     <Route exact path='/admin'>
                         <AdminPanel history={history}/>

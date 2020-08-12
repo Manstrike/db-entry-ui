@@ -37,7 +37,7 @@ export class AdminPanel extends React.Component {
             .then(res => {
                 console.log({res})
                 this.setState({
-                    users: res[0]
+                    users: res
                 });
             });
     }
