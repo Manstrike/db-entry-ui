@@ -27,6 +27,21 @@ export class AdminPanel extends React.Component {
         this.onPassChange = this._onPassChange.bind(this);
     }
 
+    componentDidMount() {
+        this._fetchUserList();
+    }
+
+    _fetchUserList() {
+        fetch(`${config.API}/user/all`)
+            .then(response => response.json())
+            .then(res => {
+                console.log({res})
+                this.setState({
+                    users: res[0]
+                });
+            });
+    }
+
     _handleButtonClick(event) {
         event.preventDefault();
 

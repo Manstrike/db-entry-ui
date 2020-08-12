@@ -31,7 +31,7 @@ export class SchoolList extends React.Component {
                             <div key={item.id}>
                                 {item.buildingsList.length > 0 
                                     ? (
-                                        <div key={item.id}>
+                                        <div>
                                             <ListItem
                                                 button
                                                 key={item.id}

@@ -15,14 +15,14 @@ export class School extends React.Component {
 
         this.state = {
             communitiesList: [],
-            level: '',
-            community: '(ORS)',
-            street: '',
-            postalCode: '',
-            city: '',
-            email: '',
-            website: '',
-            schoolBuildings: ''
+            level: null,
+            community: null,
+            street: null,
+            postalCode: null,
+            city: null,
+            email: null,
+            website: null,
+            schoolBuildings: null
         };
 
         this.onClick = this._onClick.bind(this);
@@ -51,26 +51,37 @@ export class School extends React.Component {
     _onClick(event) {
         event.preventDefault();
 
+        const {
+            level,
+            community,
+            street,
+            postalCode,
+            city,
+            email,
+            website = null,
+            schoolBuildings = null
+        } = this.state;
+
         if (
-            this.state.level === '' ||
-            this.state.community === '' ||
-            this.state.street === '' ||
-            this.state.postalCode === '' ||
-            this.state.city === '' ||
-            this.state.email === ''
+            !level ||
+            !community  ||
+            !street  ||
+            !postalCode ||
+            !city  ||
+            !email 
         ) {
             return;
         }
 
         const school = {
-            level: this.state.level,
-            community: this.state.community,
-            street: this.state.street,
-            postalCode: this.state.postalCode,
-            city: this.state.city,
-            email: this.state.email,
-            website: this.state.website,
-            schoolBuildings: this.state.schoolBuildings.split(',')
+            level: level,
+            community: community,
+            street: street,
+            postalCode: postalCode,
+            city: city,
+            email: email,
+            website: website ? website : null,
+            schoolBuildings: schoolBuildings ? schoolBuildings.split(',') : null
         }
 
         fetch(`${config.API}/school/create`, {
