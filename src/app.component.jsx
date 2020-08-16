@@ -1,8 +1,6 @@
 import React from 'react';
 import './app.component.css';
 
-import { config } from './config';
-
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { LoginPage } from './pages/login/login.component';
 import { Home } from './pages/home/home.component';
@@ -50,7 +48,7 @@ export class App extends React.Component{
                         <AdminPanel history={history}/>
                     </Route>
                     <Route path='/school/create'>
-                        <School history={history} />
+                        <School history={history}/>
                     </Route>
                     <Route path='/teacher/create'>
                         <Teacher history={history} />

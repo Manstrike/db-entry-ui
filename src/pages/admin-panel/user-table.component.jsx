@@ -17,6 +17,7 @@ export class UserTable extends React.Component {
                   <TableRow>
                     <TableCell>Username</TableCell>
                     <TableCell >Password</TableCell>
+                    <TableCell>Total Entries</TableCell>
                     <TableCell align="right">Total worked (hours)</TableCell>
                   </TableRow>
                 </TableHead>
@@ -25,6 +26,7 @@ export class UserTable extends React.Component {
                     <TableRow key={index}>
                       <TableCell component="th" scope="row">{user.name}</TableCell>
                       <TableCell>{user.password}</TableCell>
+                      <TableCell>{user.entered}</TableCell>
                       <TableCell align="right">{
                       user.worked_total ? user.worked_total.toFixed(2) : 0
                       }</TableCell>

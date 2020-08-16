@@ -7,7 +7,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import { withRouter } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import { withRouter, Link } from 'react-router-dom';
 
 import { TeacherList } from './teacher-list.component';
 
@@ -35,6 +36,8 @@ class Teacher extends React.Component {
         this.emailChanged = this._emailChanged.bind(this);
         this.handleTeacherAdding = this._handleTeacherAdding.bind(this);
         this.handleKeyDown = this._handleKeyDown.bind(this);
+        this.saveAsMale = this._saveAsMale.bind(this);
+        this.saveAsFemale = this._saveAsFemale.bind(this);
     }
 
     _handleTeacherClick(teacher) {
@@ -51,12 +54,9 @@ class Teacher extends React.Component {
         });
     }
 
-    componentWillMount() {
-        document.addEventListener('keydown', this._handleKeyDown.bind(this), false);
-    }
-
     componentDidMount() {
         const { school, building } = queryString.parse(this.props.location.search);
+        document.addEventListener('keydown', this._handleKeyDown.bind(this), false);
 
         this.setState({
             schoolId: school,
@@ -138,6 +138,7 @@ class Teacher extends React.Component {
     }
 
     _handleTeacherAdding() {
+        console.log(this.state)
         if (
             !this.state.firstName ||
             !this.state.secondName ||
@@ -145,6 +146,7 @@ class Teacher extends React.Component {
         ) {
             return;
         }
+        console.log('got here2')
 
         const teacher = {
             id: this.state.id,
@@ -158,9 +160,18 @@ class Teacher extends React.Component {
             building: this.state.buildingId
         };
 
+        const author = JSON.parse(localStorage.getItem('user'));
+
+        const data = {
+            ...teacher,
+            author: {
+                ...author
+            }
+        }
+
         fetch(`${config.API}/teacher/create`, {
             method: 'POST',
-            body: JSON.stringify(teacher),
+            body: JSON.stringify(data),
             headers: {
                 'Content-type' : 'application/json'
             }
@@ -181,34 +192,38 @@ class Teacher extends React.Component {
                 subject: '',
                 position: ''
             });
-
+            this.firstName.focus();
             this._fetchSchoolTeachers();
         });
     }
 
     _handleKeyDown(event) {
         if (event.ctrlKey &&  event.key === 'm') {
-            this.setState({
-                gender: 'M'
-            });
-
-            this._handleTeacherAdding();
+            this._saveAsMale();
         }
         if (event.ctrlKey && event.altKey && event.key === 'f') {
-            this.setState({
-                gender: 'F'
-            });
-
-            this._handleTeacherAdding();
+            this._saveaAsFemale();
         }
+    }
+
+    _saveAsMale() {
+        this.setState({
+            gender: 'M'
+        }, () => this._handleTeacherAdding());
+    }
+
+    _saveAsFemale() {
+        this.setState({
+            gender: 'F'
+        }, () => this._handleTeacherAdding());
     }
 
     _fetchSchoolTeachers() {
         const { school, building } = queryString.parse(this.props.location.search);
-        
+        const currentUser = JSON.parse(localStorage.getItem('user'));
         const route = building 
-            ? `${config.API}/teacher/building/${school}/${building}`
-            : `${config.API}/teacher/school/${school}`;
+            ? `${config.API}/teacher/building/${school}/${building}/${currentUser.id}`
+            : `${config.API}/teacher/school/${school}/${currentUser.id}`;
         
         fetch(route)
             .then(response => response.json())
@@ -229,7 +244,6 @@ class Teacher extends React.Component {
 
     render() {
         const { teacherList, school } = this.state;
-
         return (
             <div className='home-page'>
                 <TeacherList onClick={this._handleTeacherClick.bind(this)} entries={teacherList} school={school}/>
@@ -245,13 +259,7 @@ class Teacher extends React.Component {
                         component='h1'
                         variant='h6'
                     >
-                        To save as Male: CTRL(CMD) + M
-                    </Typography>
-                    <Typography 
-                        component='h1'
-                        variant='h6'
-                    >
-                        To save as Female: CTRL(CMD) + ALT + F
+                        Insert info, then use TAB button to choose gender and save immediately
                     </Typography>
 
                     <TextField 
@@ -261,6 +269,8 @@ class Teacher extends React.Component {
                         margin='normal'
                         value={this.state.firstName}
                         onChange={this.firstNameChanged}
+                        InputProps={{ inputProps: { tabIndex: 0 } }}
+                        inputRef={(input) => { this.firstName = input }}
                     />
                     <TextField 
                         label='Second Name'
@@ -269,6 +279,7 @@ class Teacher extends React.Component {
                         margin='normal'
                         value={this.state.secondName}
                         onChange={this.secondNameChanged}
+                        InputProps={{ inputProps: { tabIndex: 0 } }}
                     />
                     <TextField 
                         label='Email'
@@ -277,21 +288,40 @@ class Teacher extends React.Component {
                         margin='normal'
                         value={this.state.email}
                         onChange={this.emailChanged}
+                        InputProps={{ inputProps: { tabIndex: -1 } }}
                     />
-                    <TextField 
-                        label='Function' 
-                        select
-                        fullWidth
+                    <Button
+                        type='button'
+                        color='primary'
+                        variant='contained'
                         margin='normal'
+                        onTouchTap={this.saveAsMale}
+                        onClick={this.saveAsMale}
+                        InputProps={{ inputProps: { tabIndex: 1 } }}
                     >
-                    </TextField>
-                    <TextField 
-                        label='Subject' 
-                        select
-                        fullWidth
+                        Save as Male
+                    </Button>
+                    <Button
+                        type='button'
+                        color='primary'
+                        variant='contained'
                         margin='normal'
+                        onTouchTap={this.saveAsFemale}
+                        onClick={this.saveAsFemale}
+                        InputProps={{ inputProps: { tabIndex: 1 } }}
                     >
-                    </TextField>
+                        Save as Female
+                    </Button>
+                    <Button
+                        type='button'
+                        color='primary'
+                        variant='contained'
+                        margin='normal'
+                        component={Link}
+                        to='/home'
+                    >
+                        Return
+                    </Button>
                 </Container>
             </div>
 

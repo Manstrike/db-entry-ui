@@ -60,19 +60,23 @@ export class AdminPanel extends React.Component {
                 'Content-type' : 'application/json'
             }
         })
-        .then(response => response)
+        .then(response => {
+            if (response.status !== 200) {
+                return;
+            }
+            return response;
+        })
         .then(result => {
             console.log({result})
-            if (result.status === 200) {
-                userCopy.push(newUser);
+            if (!result) return;
+            userCopy.push(newUser);
 
-                this.setState({
-                    ...this.state,
-                    users: [...userCopy],
-                    nameInput: '',
-                    passwordInput: ''
-                });
-            }
+            this.setState({
+                ...this.state,
+                users: [...userCopy],
+                nameInput: '',
+                passwordInput: ''
+            });
         });
     }
 
@@ -90,6 +94,7 @@ export class AdminPanel extends React.Component {
 
     render() {
         const { userAllowedAccess } = this.state;
+        const { history } = this.props;
 
         if (!userAllowedAccess) return null;
 
@@ -124,12 +129,21 @@ export class AdminPanel extends React.Component {
                 />
                 <Button
                     type="button"
-                    fullWidth
                     variant="contained"
                     color="primary"
+                    margin='normal'
                     onClick={this.handleButtonClick}
                 >
                     Create user
+                </Button>
+                <Button 
+                    type='button'
+                    color='primary'
+                    variant='contained'
+                    margin='normal'
+                    onClick={history.back}
+                >
+                    Return
                 </Button>
 
                 <UserTable users={this.state.users} />

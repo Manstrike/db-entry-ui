@@ -11,6 +11,10 @@ export class Menu extends React.Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            startDisabled: false,
+        }
+
         this.onClickStart = props.onClickStart;
         this.onClickFinish = props.onClickFinish;
         this._onClickStart = this._onClickStart.bind(this);
@@ -20,11 +24,19 @@ export class Menu extends React.Component {
     _onClickStart(event) {
         event.preventDefault();
 
+        this.setState({
+            startDisabled: true,
+        });
+
         this.onClickStart();
     }
 
     _onClickFinish(event) {
         event.preventDefault();
+
+        this.setState({
+            startDisabled: false,
+        });
 
         this.onClickFinish();
     }
@@ -40,6 +52,7 @@ export class Menu extends React.Component {
                         variant="contained"
                         color="primary"
                         className="navButton"
+                        disabled={this.state.startDisabled}
                         onClick={this._onClickStart}
                     >
                         Start timemoter

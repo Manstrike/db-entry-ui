@@ -1,8 +1,10 @@
 import React from 'react';
 
-import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import InfiniteScroll from 'react-infinite-scroll-component';
+
+import { nanoid } from 'nanoid';
 
 export class TeacherList extends React.Component {
     constructor(props) {
@@ -22,21 +24,25 @@ export class TeacherList extends React.Component {
             <div className='entry-list-wrapper'> 
                 <h2>{school ? `${school.community}, ${school.city} - ${school.level}` : ''}</h2>
                 <div>
-                    <List>
+                    <InfiniteScroll
+                        dataLength={entries.length} //This is important field to render the next data
+                        hasMore={false}
+                        loader={<h4>Loading...</h4>}
+                    >
                         {entries.map((item) => {
                             return (
-                                <div key={item.id}>
+                                <div key={nanoid()}>
                                     <ListItem
                                         button
                                         onClick={this._handleTeacherClick.bind(this, item)}
-                                        key={item.id}
+                                        key={nanoid()}
                                     >
                                         <ListItemText primary={`[${item.gender}] ${item.firstName} ${item.secondName}`}/>
                                     </ListItem>
                                 </div>
                             );
                         })}
-                    </List>
+                    </InfiniteScroll>
                 </div>
             </div>
         );

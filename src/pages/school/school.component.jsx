@@ -6,30 +6,54 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import MenuItem from '@material-ui/core/MenuItem';
+import queryString from 'query-string';
 
 import { config } from '../../config';
 
 export class School extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            communitiesList: [],
-            level: null,
-            community: null,
-            street: null,
-            postalCode: null,
-            city: null,
-            email: null,
-            website: null,
-            schoolBuildings: null
-        };
-
+            this.state = {
+                communitiesList: [],
+                level: '',
+                community: '',
+                municipality: '',
+                street: '',
+                postalCode: '',
+                city: '',
+                email: '',
+                website: '',
+                schoolBuildings: ''
+            };
         this.onClick = this._onClick.bind(this);
     }
 
     componentDidMount() {
+        const { id } = queryString.parse(window.location.search);
+        if (id) {
+            this._id = id;
+            this._fetchSchool();
+        }
+
         this._fetchCommunities();
+    }
+
+    _fetchSchool() {
+        fetch(`${config.API}/school/${this._id}`)
+            .then(response => response.json())
+            .then((result) => {
+                this.setState({
+                    'level': result.level || '',
+                    'community': result.community || '',
+                    'municipality': result.municipality || '',
+                    'street': result.street || '',
+                    'postalCode': result.postalCode || '',
+                    'city': result.city || '',
+                    'email': result.email || '',
+                    'website': result.website || '',
+                    'schoolBuildings': result.schoolBuildings || ''
+                });
+            });
     }
 
     _fetchCommunities() {
@@ -59,6 +83,7 @@ export class School extends React.Component {
             city,
             email,
             website = null,
+            municipality = null,
             schoolBuildings = null
         } = this.state;
 
@@ -68,19 +93,22 @@ export class School extends React.Component {
             !street  ||
             !postalCode ||
             !city  ||
-            !email 
+            !email ||
+            !municipality
         ) {
             return;
         }
 
         const school = {
+            id: this._id || null,
             level: level,
             community: community,
             street: street,
             postalCode: postalCode,
             city: city,
             email: email,
-            website: website ? website : null,
+            website: website || null,
+            municipality: municipality || null,
             schoolBuildings: schoolBuildings ? schoolBuildings.split(',') : null
         }
 
@@ -101,14 +129,15 @@ export class School extends React.Component {
                 city: '',
                 email: '',
                 website: '',
-                schoolBuildings: ''
+                schoolBuildings: '',
+                municipality: ''
             });
         });
     }
 
     render() {
         const { communitiesList } = this.state;
-
+        const { history } = this.props;
         return (
             <Container component='main' maxWidth='xs'>
                 <CssBaseline />
@@ -118,17 +147,8 @@ export class School extends React.Component {
                 >
                     Create School
                 </Typography>
-
                 <TextField 
-                    label='School Level'
-                    fullWidth
-                    required
-                    margin='normal'
-                    value={this.state.level}
-                    onChange={this._onChange.bind(this, 'level')}
-                />
-                <TextField 
-                    label='Community' 
+                    label='Kanton' 
                     select
                     fullWidth
                     required
@@ -142,6 +162,22 @@ export class School extends React.Component {
                         </MenuItem>
                     ))}
                 </TextField>
+                <TextField 
+                    label='Municipalty'
+                    fullWidth
+                    required
+                    margin='normal'
+                    value={this.state.municipality}
+                    onChange={this._onChange.bind(this, 'municipality')}
+                />
+                <TextField 
+                    label='School Level'
+                    fullWidth
+                    required
+                    margin='normal'
+                    value={this.state.level}
+                    onChange={this._onChange.bind(this, 'level')}
+                />
                 <TextField 
                     label='Street'
                     fullWidth
@@ -196,6 +232,15 @@ export class School extends React.Component {
                     onClick={this.onClick}
                 >
                     Save
+                </Button>
+                <Button 
+                    type='button'
+                    color='primary'
+                    variant='contained'
+                    margin='normal'
+                    onClick={history.back}
+                >
+                    Cancel
                 </Button>
             </Container>
         );

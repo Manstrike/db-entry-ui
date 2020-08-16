@@ -4,7 +4,7 @@ import './home.component.css';
 import { config } from '../../config';
 
 import { Menu } from './menu.component';
-import { SchoolList } from './school-list.component';
+import { SchoolList } from './school-list/school-list.component';
 
 
 export class Home extends React.Component{
@@ -32,16 +32,26 @@ export class Home extends React.Component{
             })
             .then(response => response.json())
             .then(communities => {
-                schools = schools.map((item, i) => {
-                    const community = communities.find(comm => comm.id === item.community);
-                    return {
-                        ...item,
-                        name: `${community.name}, ${item.city} - ${item.level}`,
-                    };
-                });
+                const result = [];
+                for (const community of communities) {
+                    let schoolsInCommunity = schools.filter(item => item.community === community.id);
+                    if (schoolsInCommunity.length === 0) continue;
+
+                    schoolsInCommunity = schoolsInCommunity.map((item) => {
+                        return {
+                            ...item,
+                            name: `${item.municipality}(${community.name}), ${item.city} - ${item.level}`
+                        };
+                    });
+
+                    result.push({
+                        community,
+                        schools: schoolsInCommunity
+                    });
+                }
 
                 this.setState({
-                    entries: [...schools]
+                    entries: result
                 });
             });
     }
@@ -86,9 +96,9 @@ export class Home extends React.Component{
 
         return (
             <div className="home-page">
-                <SchoolList entries={entries}/>
+                <SchoolList history={history} entries={entries}/>
                 <Menu 
-                    history={history} 
+                    history={history}
                     onClickStart={this.onClickStart} 
                     onClickFinish={this.onClickFinish}
                 />

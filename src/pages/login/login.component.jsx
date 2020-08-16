@@ -1,8 +1,4 @@
 import React from 'react';
-import {
-    Route,
-    Link
-} from "react-router-dom";
 
 import { config } from '../../config';
 
@@ -47,7 +43,11 @@ export class LoginPage extends React.Component {
                 'Content-type' : 'application/json'
             }
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) return null;
+
+                return response.json();
+            })
             .then((result) => {
                 //TODO Add button for logout, rework this mess
                 console.log({result})
