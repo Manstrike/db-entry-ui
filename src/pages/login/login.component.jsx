@@ -1,12 +1,14 @@
 import React from 'react';
-
+import './login.component.css';
 import { config } from '../../config';
 
-import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+
+import { LoginField } from './login-field.component';
+import { PasswordField } from './password-field.component';
+import { SignInButton } from './sign-in-button.component';
 
 export class LoginPage extends React.Component {
     constructor(props) {
@@ -50,7 +52,6 @@ export class LoginPage extends React.Component {
             })
             .then((result) => {
                 //TODO Add button for logout, rework this mess
-                console.log({result})
                 if (!result) return;
                 this._onClick(userCredentials, result);
             });
@@ -70,50 +71,21 @@ export class LoginPage extends React.Component {
 
     render() {
         return (
-            <Container component="main" maxWidth="xs">
+            <div className='login-panel'>
+                <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <div className='someClass'>
                     <Typography component="h1" variant="h5">
-                        Sign in
+                        {"Sign in"}
                     </Typography>
                     <form className='somClass' noValidate>
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="login"
-                            label="Login"
-                            name="login"
-                            autoComplete="login"
-                            autoFocus
-                            onChange={this._onLoginChanged}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            onChange={this._onPasswordChanged}
-                        />
-                        <Button
-                            type="button"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className='cssdds'
-                            onClick={this._handleClick}
-                        >
-                            Sign In
-                        </Button>
+                        <LoginField onChange={this._onLoginChanged} />
+                        <PasswordField onChange={this._onPasswordChanged} />
+                        <SignInButton onClick={this._handleClick} />
                     </form>
                 </div>
-            </Container>
+                </Container>
+            </div>
         );
     }
 }
