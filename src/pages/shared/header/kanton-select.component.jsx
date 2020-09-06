@@ -11,8 +11,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export function KantonSelect(props) {
-    const { kantonList } = props;
+    const { kantonList, onSelect } = props;
     const classes = useStyles();
+    const selectedKanton = localStorage.getItem('kanton');
 
     return (
         <div className='kanton-select'>
@@ -26,12 +27,17 @@ export function KantonSelect(props) {
                         icon: classes.icon
                     }
                 }}
+                defaultValue={selectedKanton || null}
+                onChange={onSelect}
             >
                 <MenuItem value=''>
-                   <em>None</em>
+                   {'Select'}
                 </MenuItem>
                 {kantonList.map((option, index) => (
-                    <MenuItem key={index} value={option.id}>
+                    <MenuItem
+                        key={index}
+                        value={option.id}
+                    >
                         {option.name}
                     </MenuItem>
                 ))}

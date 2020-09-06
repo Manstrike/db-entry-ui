@@ -20,7 +20,8 @@ export class App extends React.Component{
             kantonList: []
         };
 
-        this._handleSignInButtonClicked = this._handleSignInButtonClicked.bind(this); 
+        this._handleSignInButtonClicked = this._handleSignInButtonClicked.bind(this);
+        this._handleKantonSelect = this._handleKantonSelect.bind(this);
     }
 
     componentDidMount() {
@@ -48,6 +49,11 @@ export class App extends React.Component{
         }
     }
 
+    _handleKantonSelect(event) {
+        console.log(event.target.value)
+        localStorage.setItem('kanton', event.target.value || null);
+    }
+
     render() {
         const { history } = this.props;
         const { user, kantonList } = this.state;
@@ -56,7 +62,7 @@ export class App extends React.Component{
         if (isAuth) {
             return (
                 <div className="App">
-                    <Header user={user} kantonList={kantonList} />
+                    <Header user={user} kantonList={kantonList} onKantonSelect={this._handleKantonSelect} />
                     <div className='content'>
                         <Switch>
                             <Redirect exact from='/' to='/home' push/>
