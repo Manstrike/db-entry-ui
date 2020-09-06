@@ -2,12 +2,13 @@ import React from 'react';
 
 import './home.component.css';
 import { config } from '../../config';
+import { GetSelectedKanton } from '../../utils/kantonInfo';
 
 import { SchoolProvider } from '../../httpProviders/SchoolProvider';
 
 import { Menu } from './menu.component';
 import { SchoolList } from './school-list/school-list.component';
-
+import { NoKantonSelected } from './no-kanton-selected/no-kanton-selected.component';
 
 export class Home extends React.Component{
     constructor(props) {
@@ -70,20 +71,32 @@ export class Home extends React.Component{
     render() {
         const { history } = this.props;
         const { entries } = this.state;
-
+        const kantonSelected = GetSelectedKanton();
+        console.log({kantonSelected})
         return (
             <div className="home-page">
-                
+                {kantonSelected
+                    ? (
+                        <React.Fragment>
+                            <SchoolList history={history} entries={entries}/>
+                            <Menu 
+                                history={history}
+                                onClickStart={this.onClickStart} 
+                                onClickFinish={this.onClickFinish}
+                            />
+                        </React.Fragment>
+                    ) 
+                    : (
+                        <React.Fragment>
+                            <NoKantonSelected />
+                        </React.Fragment>
+                    )
+                }
             </div>  
         );
     }
 }
 
 /**
- * <SchoolList history={history} entries={entries}/>
-                <Menu 
-                    history={history}
-                    onClickStart={this.onClickStart} 
-                    onClickFinish={this.onClickFinish}
-                />
+ * 
  */

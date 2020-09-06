@@ -1,4 +1,6 @@
 import React from 'react';
+import './kanton-select.component.css';
+
 import { Select, MenuItem, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({

@@ -1,0 +1,8 @@
+.kanton-select {
+    display: flex;
+    align-items: center;
+  }
+  
+  .kanton-label {
+    margin-right: 10px;
+  }

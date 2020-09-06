@@ -1,10 +1,10 @@
 import React from 'react';
 import HeaderLogo from '../../../images/svg/teacher-data.svg';
-import { KantonSelect } from './kanton-select.component';
-import { PageName } from './page-name.component';
+import { KantonSelect } from './kanton-select/kanton-select.component';
+import { PageName } from './page-name/page-name.component';
 import { isAuthentificated } from '../../../utils/auth';
 import { getPageName } from '../../../utils/pageName';
-import { UserDetails } from './user-details.component';
+import { UserDetails } from './user-details/user-details.component';
 import './header.component.css';
 
 export function Header(props) {
