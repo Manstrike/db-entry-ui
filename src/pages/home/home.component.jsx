@@ -22,7 +22,7 @@ export class Home extends React.Component{
     }
 
     componentDidMount() {
-        const currentKanton = localStorage.getItem('kanton');
+        const currentKanton = sessionStorage.getItem('kanton');
         let schoolList = [];
         if (currentKanton) {
             schoolList = SchoolProvider.getSchoolsByKanton(currentKanton);
@@ -35,7 +35,7 @@ export class Home extends React.Component{
     }
 
     onClickFinish() {
-        const savedUser = JSON.parse(localStorage.getItem('user'));
+        const savedUser = JSON.parse(sessionStorage.getItem('user'));
         fetch(`${config.API}/user/time/finish`, {
             method: 'POST',
             body: JSON.stringify({
@@ -51,7 +51,7 @@ export class Home extends React.Component{
     }
 
     onClickStart() {
-        const savedUser = JSON.parse(localStorage.getItem('user'));
+        const savedUser = JSON.parse(sessionStorage.getItem('user'));
         const data = {
             userId: savedUser.id || this.state.user.id,
             startTime: new Date(),
@@ -72,10 +72,10 @@ export class Home extends React.Component{
         const { history } = this.props;
         const { entries } = this.state;
         const kantonSelected = GetSelectedKanton();
-        console.log({kantonSelected})
+
         return (
             <div className="home-page">
-                {kantonSelected
+                {kantonSelected !== -1
                     ? (
                         <React.Fragment>
                             <SchoolList history={history} entries={entries}/>

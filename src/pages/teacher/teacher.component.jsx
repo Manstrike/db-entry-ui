@@ -160,7 +160,7 @@ class Teacher extends React.Component {
             building: this.state.buildingId
         };
 
-        const author = JSON.parse(localStorage.getItem('user'));
+        const author = JSON.parse(sessionStorage.getItem('user'));
 
         const data = {
             ...teacher,
@@ -220,7 +220,7 @@ class Teacher extends React.Component {
 
     _fetchSchoolTeachers() {
         const { school, building } = queryString.parse(this.props.location.search);
-        const currentUser = JSON.parse(localStorage.getItem('user'));
+        const currentUser = JSON.parse(sessionStorage.getItem('user'));
         const route = building 
             ? `${config.API}/teacher/building/${school}/${building}/${currentUser.id}`
             : `${config.API}/teacher/school/${school}/${currentUser.id}`;

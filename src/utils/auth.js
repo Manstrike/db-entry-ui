@@ -1,9 +1,11 @@
-export const authentificate = user => localStorage.setItem('user', user);
+export const authentificate = user => sessionStorage.setItem('user', user);
+
+export const userAuthentificated = () => JSON.parse(sessionStorage.getItem('user'));
 
 export const isAuthentificated = (user) => {
-    const userStored = localStorage.getItem('user');
+    const userStored = sessionStorage.getItem('user');
     if (!userStored || !user) return false;
-    console.log(user === JSON.parse(userStored))
+
     return user.name === JSON.parse(userStored).name;
 };
 

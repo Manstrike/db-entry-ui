@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 export function KantonSelect(props) {
     const { kantonList, onSelect } = props;
     const classes = useStyles();
-    const selectedKanton = localStorage.getItem('kanton');
+    const selectedKanton = sessionStorage.getItem('kanton');
 
     return (
         <div className='kanton-select'>
@@ -32,7 +32,7 @@ export function KantonSelect(props) {
                 defaultValue={selectedKanton || null}
                 onChange={onSelect}
             >
-                <MenuItem value=''>
+                <MenuItem value={-1}>
                    {'Select'}
                 </MenuItem>
                 {kantonList.map((option, index) => (

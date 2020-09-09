@@ -1,5 +1,4 @@
 export function GetSelectedKanton() {
-    const kanton = localStorage.getItem('kanton');
-
-    return kanton || null;
+    const kanton = JSON.parse(sessionStorage.getItem('kanton'));
+    return kanton;
 }

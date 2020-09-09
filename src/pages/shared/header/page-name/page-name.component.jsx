@@ -5,7 +5,7 @@ export function PageName(props) {
     const { pageName } = props;
 
     return (
-        <div class='page-name'>
+        <div className='page-name'>
             {pageName}
         </div>
     );

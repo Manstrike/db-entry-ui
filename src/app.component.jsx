@@ -1,6 +1,6 @@
 import React from 'react';
 import './app.component.css';
-import { authentificate, isAuthentificated, hasRole } from './utils/auth';
+import { authentificate, userAuthentificated, hasRole } from './utils/auth';
 import { config } from '../src/config';
 
 import { Route, Switch, Redirect } from 'react-router-dom';
@@ -17,11 +17,12 @@ export class App extends React.Component{
 
         this.state = {
             redirect: false,
-            kantonList: []
+            kantonList: [],
+            user: null
         };
 
-        this._handleSignInButtonClicked = this._handleSignInButtonClicked.bind(this);
-        this._handleKantonSelect = this._handleKantonSelect.bind(this);
+        this.handleSignInButtonClicked = this._handleSignInButtonClicked.bind(this);
+        this.handleKantonSelected = this._handleKantonSelected.bind(this);
     }
 
     componentDidMount() {
@@ -39,41 +40,49 @@ export class App extends React.Component{
     }
 
     _handleSignInButtonClicked(userCredentials, fetchedUser) {
-        const {login, password } = userCredentials;
+        const { login, password } = userCredentials;
 
         if (password === fetchedUser.password && login === fetchedUser.name) {
             authentificate(JSON.stringify(fetchedUser));
+            console.log('before', this.state.user)
+
             this.setState({
                 user: fetchedUser
             });
+            console.log('after', this.state.user)
         }
     }
 
-    _handleKantonSelect(event) {
-        console.log(event.target.value)
-        localStorage.setItem('kanton', event.target.value || null);
+    _handleKantonSelected(event) {
+        const kantonId = event.target.value || null;
+
+        sessionStorage.setItem('kanton', kantonId);
+        this.setState({
+            kanton: kantonId
+        });
     }
 
     render() {
+        console.log('render triggered')
         const { history } = this.props;
-        const { user, kantonList } = this.state;
-        const isAuth = isAuthentificated(user);
-
-        if (isAuth) {
+        const { kantonList } = this.state;
+        const authUser = userAuthentificated();
+        
+        if (authUser) {
             return (
                 <div className="App">
-                    <Header user={user} kantonList={kantonList} onKantonSelect={this._handleKantonSelect} />
+                    <Header user={authUser} kantonList={kantonList} onKantonSelect={this.handleKantonSelected} />
                     <div className='content'>
                         <Switch>
                             <Redirect exact from='/' to='/home' push/>
                             <Route exact path='/'>
-                                <LoginPage history={history} location={this.props.location} onClick={this._handleSignInButtonClicked}/>
+                                <LoginPage history={history} location={this.props.location} onClick={this.handleSignInButtonClicked}/>
                             </Route>
                             <Route exact path='/home'>
-                                <Home history={history} user={this.state.fetchedUser}/>
+                                <Home history={history} user={authUser}/>
                             </Route>
                             {
-                                hasRole(user, 'admin') 
+                                hasRole(authUser, 'admin') 
                                 &&  <Route exact path='/admin'>
                                         <AdminPanel history={history}/>
                                     </Route>
@@ -93,13 +102,13 @@ export class App extends React.Component{
 
         return (
             <div className="App">
-                <Header user={user} kantonList={kantonList}/>
+                <Header user={authUser} kantonList={kantonList} onKantonSelect={this.handleKantonSelected} />
                 <div className='content'>
                     <Switch>
                         <Route exact path='/'>
-                            <LoginPage history={history} onClick={this._handleSignInButtonClicked}/>
+                            <LoginPage history={history} onClick={this.handleSignInButtonClicked}/>
                         </Route>
-                        {isAuth && <Redirect to='/home' />}
+                        {authUser && <Redirect to='/home' />}
                         <Route exact path='/home'>
                             <Home history={history} />
                         </Route>
