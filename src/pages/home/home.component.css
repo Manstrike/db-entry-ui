@@ -8,12 +8,6 @@
     margin: 3rem;
 }
 
-.entry-list-wrapper {
-    max-width: 1000px;
-    flex: 1;
-    border: 1px solid grey;
-}
-
 .canton-item {
     background: lightcoral;
     border-top: 1px solid black;

@@ -1,0 +1,24 @@
+.school-list-container {
+    width: 100%;
+    height: 100%;
+    margin: 20px;
+}
+
+.school-list-table {
+    height: 100%;
+}
+
+.table-header {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 14px;
+    /* identical to box height */
+
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.38);
+}
+
+.table-pagination {
+    margin-top: 20px;
+}

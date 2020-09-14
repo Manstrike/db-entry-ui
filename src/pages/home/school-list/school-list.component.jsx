@@ -1,25 +1,23 @@
 import React from 'react';
-import List from "@material-ui/core/List";
+import './school-list.component.css';
 
-import { Canton } from './canton-item.component';
-import { nanoid } from 'nanoid';
-import { Typography } from '@material-ui/core';
+import { SchoolListTable } from './school-list-table/school-list-table.component';
 
 export class SchoolList extends React.Component {
     render() {
-        const {entries, history} = this.props;
+        const { entries } = this.props;
 
         return (
             <div className='entry-list-wrapper'>
-                <Typography>SCHOOL LIST</Typography>
-                <List>
-                    {entries.map((item) => {
-                        return (
-                            <Canton key={nanoid()} item={item} history={history}/>
-                        );
-                    })}
-                </List>
+                {entries.length > 0 
+                    ? (
+                        <SchoolListTable entries={entries}/>
+                    ) 
+                    : (
+                        <p className='no-schools-entered'>Kanton has no schools entered</p>
+                    )
+                }
             </div>
-        )
+        );
     }
 }

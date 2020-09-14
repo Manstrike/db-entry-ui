@@ -63,7 +63,6 @@ export class App extends React.Component{
     }
 
     render() {
-        console.log('render triggered')
         const { history } = this.props;
         const { kantonList } = this.state;
         const authUser = userAuthentificated();

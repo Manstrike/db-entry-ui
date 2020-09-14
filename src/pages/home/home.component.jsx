@@ -17,8 +17,8 @@ export class Home extends React.Component{
         this.state = {
             kanton: null,
             user: props.user,
-            entries: [],
-        }
+            schoolList: [],
+        };
     }
 
     componentDidMount() {
@@ -30,7 +30,13 @@ export class Home extends React.Component{
 
         this.setState({
             kanton: currentKanton || null,
-            schoolList
+            schoolList: [
+                {name: 'Schole 1', buildingsCount: 5},
+                {name: 'Schole 2', buildingsCount: 1},
+                {name: 'Schole 3', buildingsCount: 0},
+                {name: 'Schole 4', buildingsCount: 0},
+                {name: 'Schole 5', buildingsCount: 15},
+            ]
         });
     }
 
@@ -69,26 +75,20 @@ export class Home extends React.Component{
     }
 
     render() {
-        const { history } = this.props;
-        const { entries } = this.state;
+        const { schoolList } = this.state;
         const kantonSelected = GetSelectedKanton();
 
         return (
             <div className="home-page">
-                {kantonSelected !== -1
+                {kantonSelected === -1 || !kantonSelected
                     ? (
                         <React.Fragment>
-                            <SchoolList history={history} entries={entries}/>
-                            <Menu 
-                                history={history}
-                                onClickStart={this.onClickStart} 
-                                onClickFinish={this.onClickFinish}
-                            />
+                            <NoKantonSelected />
                         </React.Fragment>
                     ) 
                     : (
                         <React.Fragment>
-                            <NoKantonSelected />
+                            <SchoolList entries={schoolList} />
                         </React.Fragment>
                     )
                 }
